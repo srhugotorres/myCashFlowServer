@@ -3,9 +3,9 @@ const Schema = mongoose.Schema;
 
 const contasFaturas = new Schema({
   descricao: String,
-  dataVencimento: Date,
-  DataPagamento: Date,
-  valor: Number,
+  dataVencimento: String,
+  DataPagamento: String,
+  valor: String,
 });
 
 module.exports = mongoose.model("contasFaturas", contasFaturas);

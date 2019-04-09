@@ -3,6 +3,6 @@ const Schema = mongoose.Schema;
 
 const gastos = new Schema({
   descricao: String,
-  dataPagamento: Date,
-  valor: Float32Array
+  dataPagamento: String,
+  valor: String
 });
