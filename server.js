@@ -3,7 +3,8 @@ const app = express();
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const mongoose = require('mongoose');
-const ContasFaturasRoutes = require('./Routes/ContasFaturasRoutes.js')
+const billsRoutes = require('./Routes/billsRoutes.js')
+const debtsRoutes = require('./Routes/debtsRoutes.js')
 const PORT = 4000;
 
 app.use(cors());
@@ -15,7 +16,8 @@ connection.once('open', function() {
     console.log("MongoDB database connection established successfully");
 })
 
-app.use('/ContasFaturas', ContasFaturasRoutes);
+app.use('/ContasFaturas', billsRoutes);
+app.use('/Dividas', debtsRoutes);
 app.listen(PORT, function() {
     console.log("Server is running on Port: " + PORT);
 });
