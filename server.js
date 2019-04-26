@@ -5,16 +5,12 @@ const passport = require("passport");
 
 const port = process.env.PORT || 4000;
 
-
-const cors = require('cors');
+const cors = require("cors");
 const app = express();
 
 const users = require("./routes/api/users");
-
-const billsRoutes = require('./routes/billsRoutes.js')
-const debtsRoutes = require('./routes/debtsRoutes.js')
-
-
+const bills = require("./routes/api/bills.js");
+const debts = require("./routes/api/debts.js");
 
 // Body parser middleware
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -39,7 +35,7 @@ require("./config/passport")(passport);
 
 // Use routes
 app.use("/api/users", users);
-app.use('/api/contasFaturas', billsRoutes);
-app.use('/api/dividas', debtsRoutes);
-app.listen(port, () => console.log(`Server is running on port: ${port}`));
+app.use("/api/contasFaturas", bills);
+app.use("/api/dividas", debts);
 
+app.listen(port, () => console.log(`Server is running on port: ${port}`));
