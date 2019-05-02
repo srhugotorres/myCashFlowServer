@@ -1,10 +1,10 @@
 const express = require('express');
-const debtsRoutes = express.Router();
+const debtsAPI = express.Router();
 
-const debtsModel = require('../Models/debts.js');
+const debtModel = require('../../models/debt.js');
 
-debtsRoutes.route('/').get(function(req, res) {
-    debtsModel.find(function(err, debt) {
+debtsAPI.route('/').get(function(req, res) {
+    debtModel.find(function(err, debt) {
         if (err) {
             console.log(err);
         } else {
@@ -14,8 +14,8 @@ debtsRoutes.route('/').get(function(req, res) {
 });
 // Add
 
-debtsRoutes.route('/add').post(function(req, res) {
-    let debt = new debtsModel(req.body);
+debtsAPI.route('/').post(function(req, res) {
+    let debt = new debtModel(req.body);
     debt.save()
         .then(debt => {
             res.status(200).json({'Dívidas': 'Dívidas adicionado com sucesso'});
@@ -26,15 +26,15 @@ debtsRoutes.route('/add').post(function(req, res) {
 });
 
 //
-debtsRoutes.route('/:id').get(function(req, res){
+debtsAPI.route('/:id').get(function(req, res){
     let id = req.params.id;
-    debtsModel.findById(id, function(err, debt){
+    debtModel.findById(id, function(err, debt){
         res.json(debt);
     });
 });
 //
-debtsRoutes.route('/update/:id').post(function(req,res){
-    debtsModel.findById(req.params.id, function(err, debt){
+debtsAPI.route('/:id').post(function(req,res){
+    debtModel.findById(req.params.id, function(err, debt){
         if(!debt){
             res.status(404).send("data is not found");
         }else{
@@ -52,4 +52,4 @@ debtsRoutes.route('/update/:id').post(function(req,res){
         }
     });
 });
-module.exports = debtsRoutes
+module.exports = debtsAPI

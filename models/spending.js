@@ -1,11 +1,11 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const spendings = new Schema({
-  descriptions: String,
+const spending = new Schema({
+  description: String,
   dueDate: String,
   value: String
 });
 
 
-module.exports = mongoose.model("spendings", spendigs);
+module.exports = mongoose.model("spending", spendig);

@@ -1,11 +1,11 @@
 const express = require('express');
-const billsRoutes = express.Router();
+const billAPI = express.Router();
 
-const billsModel = require('../Models/bills.js');
+const billModel = require('../../models/bill.js');
 
 // index
-billsRoutes.route('/').get(function(req, res) {
-    billsModel.find(function(err, bill) {
+billAPI.route('/').get(function(req, res) {
+    billModel.find(function(err, bill) {
         if (err) {
             console.log(err);
         } else {
@@ -15,8 +15,8 @@ billsRoutes.route('/').get(function(req, res) {
 });
 // Add
 
-billsRoutes.route('/add').post(function(req, res) {
-    let bill = new billsModel(req.body);
+billAPI.route('/').post(function(req, res) {
+    let bill = new billModel(req.body);
     bill.save()
         .then(bill => {
             res.status(200).json({'ContasFaturas': 'ContasFaturas adicionado com sucesso'});
@@ -27,15 +27,15 @@ billsRoutes.route('/add').post(function(req, res) {
 });
 
 //
-billsRoutes.route('/:id').get(function(req, res){
+billAPI.route('/:id').get(function(req, res){
     let id = req.params.id;
-    billsModel.findById(id, function(err, bill){
+    billModel.findById(id, function(err, bill){
         res.json(bill);
     });
 });
 //
-billsRoutes.route('/update/:id').post(function(req,res){
-    billsModel.findById(req.params.id, function(err, bill){
+billAPI.route('/:id').post(function(req,res){
+    billModel.findById(req.params.id, function(err, bill){
         if(!bill){
             res.status(404).send("data is not found");
         }else{
@@ -54,4 +54,4 @@ billsRoutes.route('/update/:id').post(function(req,res){
         }
     });
 });
-module.exports = billsRoutes
+module.exports = billAPI
