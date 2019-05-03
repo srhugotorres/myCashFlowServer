@@ -1,10 +1,10 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const debt = new Schema({
-    description: String,
-    dayDue: Date,
-    totalDebt: Number,
+let debtSchema = new Schema({
+    description: {type: String},
+    dueDay: {type: Number},
+    totalDebt: {type: Number}
 });
 
-module.exports = mongoose.model("debt", debt);
+module.exports = mongoose.model("debt", debtSchema);

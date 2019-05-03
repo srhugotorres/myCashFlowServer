@@ -1,18 +1,14 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-
-const port = process.env.PORT || 4000;
-const apiURL = '/api';
-
-const cors = require('cors');
-const app = express();
-
-const api = require('./routes/api');
 const billModel = require('./models/bill');
-const spendingModel = require('./models/spending')
+const spendingModel = require('./models/spending');
+const debtModel = require('./models/debt');
 
-
+const app = express();
+const port = process.env.PORT || 4000;
+const api = require('./routes/api/index.js');
+const apiURL = '/api';
 const dbConnString = 'mongodb://127.0.0.1:27017/mycashflow';
 
 // Connect to MongoDB
@@ -23,9 +19,11 @@ mongoose
     )
     .catch(err => console.log(err));
 
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(apiURL + '/bill', api(billModel));
 app.use(apiURL + '/spending', api(spendingModel));
-    
-    
-app.listen(port, () => console.log(`Server is running on port: ${port}`));
+app.use(apiURL + '/debt', api(debtModel));
+
+app.listen(port, () => console.log(`Listening on port ${port}`));

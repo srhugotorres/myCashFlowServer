@@ -1,11 +1,11 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const bill = new Schema({
-  description: String,
-  dueDate: Date,
-  paymentDate: Date,
-  value: Number,
+let billSchema = new Schema({
+  description: {type: String},
+  dueDate: {type: Date},
+  paymentDate: {type: Date},
+  value: {type: Number},
 });
 
-module.exports = mongoose.model("bill", bill);
+module.exports = mongoose.model("bill", billSchema);
