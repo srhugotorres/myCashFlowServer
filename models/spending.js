@@ -3,9 +3,9 @@ const Schema = mongoose.Schema;
 
 const spending = new Schema({
   description: String,
-  dueDate: String,
-  value: String
+  dueDate: Date,
+  value: Number
 });
 
 
-module.exports = mongoose.model("spending", spendig);
+module.exports = mongoose.model("spending", spending);

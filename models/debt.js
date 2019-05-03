@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const debt = new Schema({
     description: String,
-    dayOfDue: Date,
+    dayDue: Date,
     totalDebt: Number,
 });
 
