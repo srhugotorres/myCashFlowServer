@@ -1,16 +1,18 @@
-const express = require("express");
-const mongoose = require("mongoose");
-const bodyParser = require("body-parser");
+
+const express = require('express');
+const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
 const passport = require("passport");
 
-const port = process.env.PORT || 4000;
-
-const cors = require("cors");
 const app = express();
+const port = process.env.PORT || 4000;
+const api = require('./routes/api/index.js');
+const apiURL = '/api';
 
 const users = require("./routes/api/users");
-const bills = require("./routes/api/bills.js");
-const debts = require("./routes/api/debts.js");
+const billModel = require('./models/bill');
+const spendingModel = require('./models/spending');
+const debtModel = require('./models/debt');
 
 // Body parser middleware
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -27,6 +29,9 @@ mongoose
   )
   .catch(err => console.log(err));
 
+  app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
 // Passport middleware
 app.use(passport.initialize());
 
@@ -34,8 +39,10 @@ app.use(passport.initialize());
 require("./config/passport")(passport);
 
 // Use routes
-app.use("/api/users", users);
-app.use("/api/contasFaturas", bills);
-app.use("/api/dividas", debts);
+app.use(apiURL + "/users", users);
+app.use(apiURL + '/bill', api(billModel));
+app.use(apiURL + '/spending', api(spendingModel));
+app.use(apiURL + '/debt', api(debtModel));
 
 app.listen(port, () => console.log(`Server is running on port: ${port}`));
+
