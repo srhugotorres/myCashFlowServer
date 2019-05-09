@@ -10,9 +10,9 @@ const api = require('./routes/api/index.js');
 const apiURL = '/api';
 
 const users = require("./routes/api/users");
-const billModel = require('./models/bill');
-const spendingModel = require('./models/spending');
-const debtModel = require('./models/debt');
+const incomes = require("./routes/api/incomes");
+const bills = require("./routes/api/bills.js");
+const debts = require("./routes/api/debts.js");
 
 // Body parser middleware
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -23,7 +23,7 @@ const dbConnString = require("./config/keys").mongoURI;
 
 // Connect to MongoDB
 mongoose
-  .connect(dbConnString, { useNewUrlParser: true })
+  .connect(dbConnString, { useNewUrlParser: true, useFindAndModify: false })
   .then(() =>
     console.log("MongoDB database connection established successfully")
   )
@@ -39,10 +39,10 @@ app.use(passport.initialize());
 require("./config/passport")(passport);
 
 // Use routes
-app.use(apiURL + "/users", users);
-app.use(apiURL + '/bill', api(billModel));
-app.use(apiURL + '/spending', api(spendingModel));
-app.use(apiURL + '/debt', api(debtModel));
+app.use("/api/users", users);
+app.use("/api/incomes", incomes);
+app.use("/api/contasFaturas", bills);
+app.use("/api/dividas", debts);
 
 app.listen(port, () => console.log(`Server is running on port: ${port}`));
 
