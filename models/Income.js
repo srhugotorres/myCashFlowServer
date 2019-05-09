@@ -13,14 +13,14 @@ const IncomeSchema = new Schema({
   },
   description: {
     type: String,
-    required: false,
+    required: true,
     max: 100
   },
   value: {
     type: Number,
     required: true
   },
-  value: {
+  date: {
     type: Date,
     required: true
   },

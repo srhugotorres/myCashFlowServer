@@ -4,17 +4,18 @@ const isEmpty = require("./is-empty");
 module.exports = function validateIncomeInput(data) {
   let errors = {};
 
-  data.origin = !isEmpty(data.origin) ? data.origin : "";
+  data.category = !isEmpty(data.category) ? data.category : "";
   data.description = !isEmpty(data.description) ? data.description : "";
   data.value = !isEmpty(data.value) ? data.value : 0;
+  data.date = !isEmpty(data.date) ? data.date : "";
 
   // Validação da origem
-  if (!validator.isLength(data.origin, { min: 3, max: 20 })) {
-    errors.origin = "A origem deve ser maior que 2 e menor que 20";
+  if (!validator.isLength(data.category, { min: 3, max: 20 })) {
+    errors.category = "A origem deve ser maior que 2 e menor que 20";
   }
 
-  if (validator.isEmpty(data.origin)) {
-    errors.origin = "O campo origem é obrigatório";
+  if (validator.isEmpty(data.category)) {
+    errors.category = "O campo categoria é obrigatório";
   }
   // Validação da origem
 
@@ -37,6 +38,12 @@ module.exports = function validateIncomeInput(data) {
     errors.value = "O campo valor é inválido";
   }
   // Validação do valor
+
+  // Validação da data
+  if (validator.isEmpty(data.date.toString())) {
+    errors.date = "O campo data é obrigatório";
+  }
+  // Validação da data
 
   return {
     errors,
