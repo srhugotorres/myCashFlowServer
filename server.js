@@ -10,8 +10,9 @@ const apiURL = "/api";
 
 const users = require("./routes/api/users");
 const incomes = require("./routes/api/incomes");
-// const bills = require("./routes/api/bills.js");
-// const debts = require("./routes/api/debts.js");
+const expenses = require("./routes/api/expenses");
+// const bills = require("./routes/api/bills");
+const debts = require("./routes/api/debts");
 
 // Body parser middleware
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -40,7 +41,8 @@ require("./config/passport")(passport);
 // Use routes
 app.use("/api/users", users);
 app.use("/api/incomes", incomes);
+app.use("/api/expenses", expenses);
 // app.use("/api/contasFaturas", bills);
-// app.use("/api/dividas", debts);
+app.use("/api/debts", debts);
 
 app.listen(port, () => console.log(`Server is running on port: ${port}`));
