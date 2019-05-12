@@ -5,14 +5,14 @@ const passport = require("passport");
 
 const app = express();
 const port = process.env.PORT || 4000;
-const api = require("./routes/api/index.js");
 const apiURL = "/api";
 
 const users = require("./routes/api/users");
 const incomes = require("./routes/api/incomes");
 const expenses = require("./routes/api/expenses");
-// const bills = require("./routes/api/bills");
 const debts = require("./routes/api/debts");
+const bills = require("./routes/api/bills.js");
+const spendings = require("./routes/api/spendings.js");
 
 // Body parser middleware
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -41,8 +41,9 @@ require("./config/passport")(passport);
 // Use routes
 app.use("/api/users", users);
 app.use("/api/incomes", incomes);
+app.use("/api/bills", bills);
+app.use("/api/spendings", spendings);
 app.use("/api/expenses", expenses);
-// app.use("/api/contasFaturas", bills);
 app.use("/api/debts", debts);
 
 app.listen(port, () => console.log(`Server is running on port: ${port}`));
