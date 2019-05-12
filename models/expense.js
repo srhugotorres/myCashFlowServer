@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 // Create Schema
-const DebtSchema = new Schema({
+const ExpenseSchema = new Schema({
   user: {
     type: Schema.Types.ObjectId,
     ref: "users"
@@ -11,12 +11,16 @@ const DebtSchema = new Schema({
     type: String,
     required: true,
   },
-  qfatura: {
-    type: Number,
+  category: {
+    type: String,
     required: true
   },
-  vfatura: {
+  paymentDate: {
     type: Date,
+    required: true
+  },
+  payment: {
+    type: String,
     required: true
   },
   value: {
@@ -25,4 +29,4 @@ const DebtSchema = new Schema({
   },
 });
 
-module.exports = Debt = mongoose.model("debt", DebtSchema);
+module.exports = Expense = mongoose.model("expense", ExpenseSchema);
