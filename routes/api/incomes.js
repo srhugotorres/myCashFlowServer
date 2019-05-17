@@ -83,4 +83,31 @@ router.post(
   }
 );
 
+// @route   DELETE api/incomes/:id
+// @desc    Deleta uma renda
+// @access  Private
+router.delete(
+  "/:id",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    Income.findById(req.params.id).then(income => {
+      // Check for income owner
+      if (income.user.toString() !== req.user.id) {
+        errors.noAuthorization = "Usuário não autorizado";
+        res.status(401).json(errors);
+      }
+
+      // Delete
+      income
+        .remove()
+        .then(() => res.json({ success: true }))
+        .catch(err =>
+          res
+            .status(404)
+            .json({ incomeNotFound: "Esta renda não foi encontrada" })
+        );
+    });
+  }
+);
+
 module.exports = router;
