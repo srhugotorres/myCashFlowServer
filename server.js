@@ -13,6 +13,7 @@ const expenses = require("./routes/api/expenses");
 const debts = require("./routes/api/debts");
 const bills = require("./routes/api/bills.js");
 const spendings = require("./routes/api/spendings.js");
+const creditcards = require("./routes/api/creditcards");
 
 // Body parser middleware
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -45,5 +46,6 @@ app.use("/api/bills", bills);
 app.use("/api/spendings", spendings);
 app.use("/api/expenses", expenses);
 app.use("/api/debts", debts);
+app.use("/api/creditcards", creditcards);
 
 app.listen(port, () => console.log(`Server is running on port: ${port}`));

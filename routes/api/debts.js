@@ -84,4 +84,31 @@ router.post(
   }
 );
 
+// @route   DELETE api/debts/:id
+// @desc    Deleta uma dívida
+// @access  Private
+router.delete(
+  "/:id",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    Debt.findById(req.params.id).then(debt => {
+      // Check for debt owner
+      if (debt.user.toString() !== req.user.id) {
+        errors.noAuthorization = "Usuário não autorizado";
+        res.status(401).json(errors);
+      }
+
+      // Delete
+      debt
+        .remove()
+        .then(() => res.json({ success: true }))
+        .catch(err =>
+          res
+            .status(404)
+            .json({ debtNotFound: "Esta dívida não foi encontrada" })
+        );
+    });
+  }
+);
+
 module.exports = router;

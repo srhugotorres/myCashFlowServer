@@ -85,4 +85,31 @@ router.post(
   }
 );
 
+// @route   DELETE api/expense/:id
+// @desc    Deleta uma despesa
+// @access  Private
+router.delete(
+  "/:id",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    Expense.findById(req.params.id).then(expense => {
+      // Check for expense owner
+      if (expense.user.toString() !== req.user.id) {
+        errors.noAuthorization = "Usuário não autorizado";
+        res.status(401).json(errors);
+      }
+
+      // Delete
+      expense
+        .remove()
+        .then(() => res.json({ success: true }))
+        .catch(err =>
+          res
+            .status(404)
+            .json({ expenseNotFound: "Esta despesa não foi encontrada" })
+        );
+    });
+  }
+);
+
 module.exports = router;
