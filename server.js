@@ -9,10 +9,7 @@ const apiURL = "/api";
 
 const users = require("./routes/api/users");
 const incomes = require("./routes/api/incomes");
-const expenses = require("./routes/api/expenses");
-const debts = require("./routes/api/debts");
-const bills = require("./routes/api/bills.js");
-const spendings = require("./routes/api/spendings.js");
+const spendings = require("./routes/api/spending");
 const creditcards = require("./routes/api/creditcards");
 
 // Body parser middleware
@@ -42,10 +39,7 @@ require("./config/passport")(passport);
 // Use routes
 app.use("/api/users", users);
 app.use("/api/incomes", incomes);
-app.use("/api/bills", bills);
 app.use("/api/spendings", spendings);
-app.use("/api/expenses", expenses);
-app.use("/api/debts", debts);
 app.use("/api/creditcards", creditcards);
 
 app.listen(port, () => console.log(`Server is running on port: ${port}`));

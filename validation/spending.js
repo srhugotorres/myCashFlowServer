@@ -1,21 +1,21 @@
 const validator = require("validator");
 const isEmpty = require("./is-empty");
 
-module.exports = function validateExpenseInput(data) {
+module.exports = function validateSpendingInput(data) {
   let errors = {};
 
-  data.description = !isEmpty(data.description) ? data.description : "";
+  data.spending = !isEmpty(data.spending) ? data.spending : "";
   data.category = !isEmpty(data.category) ? data.category : "";
   data.paymentDate = !isEmpty(data.paymentDate) ? data.paymentDate : "";
   data.payment = !isEmpty(data.payment) ? data.payment : "";
   data.value = !isEmpty(data.value) ? data.value : 0;
 
   // Validação da Descrição
-  if (!validator.isLength(data.description, { min: 3, max: 20 })) {
-    errors.description = "A descrição deve ser maior que 2 e menor que 100";
+  if (!validator.isLength(data.spending, { min: 3, max: 20 })) {
+    errors.spending = "A descrição deve ser maior que 2 e menor que 100";
   }
-  if (validator.isEmpty(data.description)) {
-    errors.description = "O campo descrição é obrigatório";
+  if (validator.isEmpty(data.spending)) {
+    errors.spending = "O campo descrição é obrigatório";
   }
 
   // Validação da Categoria

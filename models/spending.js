@@ -1,32 +1,40 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const spendingSchema = new Schema({
+// Create Schema
+const SpendingSchema = new Schema({
   user: {
     type: Schema.Types.ObjectId,
     ref: "users"
+  },
+  spending: {
+    type: String,
+    required: true,
   },
   category: {
     type: String,
     required: true
   },
-  description: {
+  paymentDate: {
+    type: Date,
+    required: true
+  },
+  payment: {
     type: String,
     required: true
   },
-  paymentDate: {
+  value: {
+    type: Number,
+    required: true
+  },
+  insertionDate: {
     type: Date,
     default: Date.now
-  },
-  value: {
-    type: Number
   },
   updatedDate: {
     type: Date,
     required: false
-  }
+  },
 });
 
-
-
-module.exports = mongoose.model('spending', spendingSchema);
+module.exports = Spending = mongoose.model("spending", SpendingSchema);
