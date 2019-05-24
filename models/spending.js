@@ -7,9 +7,23 @@ const SpendingSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "users"
   },
+  previewSpending: {
+    type: Schema.Types.ObjectId,
+    ref:"spending",
+    required: false,
+    default: null
+  },
   spending: {
     type: String,
     required: true,
+  },
+  currentBill: {
+    type: Number,
+    default: 1
+  },
+  totalBills: {
+    type: Number,
+    default: 1
   },
   category: {
     type: String,
@@ -26,6 +40,10 @@ const SpendingSchema = new Schema({
   value: {
     type: Number,
     required: true
+  },
+  description: {
+    type: String,
+    max: 100
   },
   insertionDate: {
     type: Date,

@@ -8,7 +8,7 @@ const isEmpty = require("../../validation/is-empty");
 const validateSpendingInput = require("../../validation/spending");
 
 // Load Spending model
-const Spending = require("../../models/spending");
+const Spending = require("../../models/Spending");
 // Load User profile
 const User = require("../../models/User");
 
@@ -60,11 +60,12 @@ router.post(
     spendingFields.user = req.user.id;
 
     if (req.body.spending) spendingFields.spending = req.body.spending;
+    if (req.body.currentBill) spendingFields.currentBill = req.body.currentBill;
+    if (req.body.totalBills) spendingFields.totalBills = req.body.totalBills;
     if (req.body.category) spendingFields.category = req.body.category;
     if (req.body.paymentDate) spendingFields.paymentDate = req.body.paymentDate;
     if (req.body.payment) spendingFields.payment = req.body.payment;
     if (req.body.value) spendingFields.value = req.body.value;
-    
 
     Spending.findById(req.body.id).then(spending => {
       if (spending) {
@@ -79,7 +80,39 @@ router.post(
       } else {
         // Adicionar
         // Salvar
-        new Spending(spendingFields).save().then(spending => res.json(spending));
+        let spendingID;
+        new Spending(spendingFields).save(
+          function(err,mySpending){
+            spendingID = mySpending.id
+            Spending.findById(spendingID).then(
+              spending => {
+                // Verifica se o gasto é recorrente
+                if (spending.previewSpending === null && spending.totalBills > 1){
+                  for(let i = spending.currentBill + 1 ; i <= spending.totalBills; i++){ 
+                    let currentSpending = {}
+                    currentSpending.user = spending.user;
+                    // Armazena id do mês anterior. requer correção.
+                    currentSpending.previewSpending = spendingID;
+                    currentSpending.spending = spending.spending;
+                    currentSpending.currentBill = i;
+                    currentSpending.totalBills = spending.totalBills;
+                    currentSpending.category = spending.category;
+                    // Necessário realizar correção na data para que vá incrementando o mês
+                    currentSpending.paymentDate =  spending.paymentDate;
+                    currentSpending.payment = spending.payment;
+                    currentSpending.value = spending.value;
+                    // adiciona a despesa recorrente com mês seguinte.
+                    new Spending(currentSpending).save(
+                      function(err,mySpending){
+                        spendingID = mySpending.id
+                      }
+                    )
+                  }
+                }
+              }
+            )
+          }
+        ).then(spending => res.json(spending));
       }
     });
   }
