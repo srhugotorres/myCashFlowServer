@@ -9,13 +9,13 @@ const SpendingSchema = new Schema({
   },
   previewSpending: {
     type: Schema.Types.ObjectId,
-    ref:"spending",
+    ref: "spending",
     required: false,
     default: null
   },
   spending: {
     type: String,
-    required: true,
+    required: true
   },
   currentBill: {
     type: Number,
@@ -52,7 +52,7 @@ const SpendingSchema = new Schema({
   updatedDate: {
     type: Date,
     required: false
-  },
+  }
 });
 
 module.exports = Spending = mongoose.model("spending", SpendingSchema);
