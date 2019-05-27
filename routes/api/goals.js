@@ -5,20 +5,20 @@ const passport = require("passport");
 const isEmpty = require("../../validation/is-empty");
 
 // Carrega a validação
-const validateCreditcardInput = require("../../validation/creditcards");
+const validateGoalsInput = require("../../validation/goals");
 
-// Load Creditcard model
-const Creditcard = require("../../models/Creditcard");
+// Load Goals model
+const Goals = require("../../models/Goals");
 // Load User profile
 const User = require("../../models/User");
 
-// @route   GET api/creditcards/test
-// @desc    Tests creditcards route
+// @route   GET api/goals/test
+// @desc    Tests goals route
 // @access  Public
-router.get("/test", (req, res) => res.json({ msg: "Creditcard works!" }));
+router.get("/test", (req, res) => res.json({ msg: "Goals works!" }));
 
-// @route   GET api/creditcards
-// @desc    Get current user creditcards
+// @route   GET api/goals
+// @desc    Get current user goals
 // @access  Private
 router.get(
   "/",
@@ -26,27 +26,27 @@ router.get(
   (req, res) => {
     const errors = {};
 
-    Creditcard.find({ user: req.user.id })
-      .then(creditcard => {
-        if (isEmpty(creditcard)) {
-          errors.noCreditcard = "Nenhum cartão de crédito cadastrado para este usuário";
+    Goals.find({ user: req.user.id })
+      .then(Goals => {
+        if (isEmpty(goals)) {
+          errors.noGoals = "Nenhum cartão de crédito cadastrado para este usuário";
           res.status(404).json(errors);
         }
 
-        res.json(creditcard);
+        res.json(goals);
       })
       .catch(err => res.status(404).json(err));
   }
 );
 
-// @route   POST api/creditcards
+// @route   POST api/goals
 // @desc    Adiciona ou edita um cartão de crédito
 // @access  Private
 router.post(
   "/",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    const { errors, isValid } = validateCreditcardInput(req.body);
+    const { errors, isValid } = validateGoalsInput(req.body);
 
     // Checar a validação
     if (!isValid) {
@@ -55,49 +55,49 @@ router.post(
     }
 
     // Obtem os campos
-    const creditcardFields = {};
+    const goalsFields = {};
 
-    creditcardFields.user = req.user.id;
+    goalsFields.user = req.user.id;
 
-    if (req.body.name) creditcardFields.name = req.body.name;
-    if (req.body.limit) creditcardFields.limit = req.body.limit;
-    if (req.body.date) creditcardFields.date = req.body.date;
+    if (req.body.name) goalsFields.name = req.body.name;
+    if (req.body.limit) goalsFields.limit = req.body.limit;
+    if (req.body.date) goalsFields.date = req.body.date;
 
-    Creditcard.findById(req.body.id).then(creditcard => {
-      if (creditcard) {
+    Goals.findById(req.body.id).then(goals => {
+      if (goals) {
         // Editar
-        creditcardFields.updatedDate = Date.now();
+        goalsFields.updatedDate = Date.now();
 
-        Creditcard.findOneAndUpdate(
+        Goals.findOneAndUpdate(
           { _id: req.body.id },
-          { $set: creditcardFields },
+          { $set: GoalsFields },
           { new: true }
-        ).then(creditcard => res.json(creditcard));
+        ).then(Goals => res.json(goals));
       } else {
         // Adicionar
         // Salvar
-        new Creditcard(creditcardFields).save().then(creditcard => res.json(creditcard));
+        new Goals(goalsFields).save().then(goals => res.json(goals));
       }
     });
   }
 );
 
-// @route   DELETE api/creditcard/:id
+// @route   DELETE api/goals/:id
 // @desc    Deleta um cartão de credito
 // @access  Private
 router.delete(
   "/:id",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    Creditcard.findById(req.params.id).then(creditcard => {
-      // Check for creditcard owner
-      if (creditcard.user.toString() !== req.user.id) {
+    Goals.findById(req.params.id).then(goals => {
+      // Check for goals owner
+      if (goals.user.toString() !== req.user.id) {
         errors.noAuthorization = "Usuário não autorizado";
         res.status(401).json(errors);
       }
 
       // Delete
-      creditcard
+      goals
         .remove()
         .then(() => res.json({ success: true }))
         .catch(err =>

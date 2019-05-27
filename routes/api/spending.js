@@ -113,7 +113,6 @@ router.post(
                 // Verifica se o gasto é recorrente
                 if (spending.totalBills > 1){
                   for(let i = spending.currentBill + 1 ; i <= spending.totalBills; i++){
-                    console.log("Contando.... : " + countDate);
                     let currentSpending = {};
                     currentSpending.user = spending.user;
                     currentSpending.spending = spending.spending;

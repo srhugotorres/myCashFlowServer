@@ -2,23 +2,22 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 // Create Schema
-
-const CreditcardSchema = new Schema({
+const GoalSchema = new Schema({
   user: {
     type: Schema.Types.ObjectId,
     ref: "users"
   },
-  name: {
+  goal: {
     type: String,
     required: true,
     max: 100
   },
-  limit: {
-    type: Number,
-    required: true,
-  },
   date: {
     type: Date,
+    required: true
+  },
+  value: {
+    type: Number,
     required: true
   },
   insertionDate: {
@@ -31,4 +30,4 @@ const CreditcardSchema = new Schema({
   }
 });
 
-module.exports = Creditcard = mongoose.model("creditcard", CreditcardSchema);
+module.exports = Goal = mongoose.model("goal", GoalSchema);

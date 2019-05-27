@@ -10,6 +10,7 @@ const users = require("./routes/api/users");
 const incomes = require("./routes/api/incomes");
 const spendings = require("./routes/api/spending");
 const creditcards = require("./routes/api/creditcards");
+const goals = require("./routes/api/goals");
 const dashboard = require("./routes/api/dashboard");
 
 // Body parser middleware
@@ -41,6 +42,7 @@ app.use("/api/users", users);
 app.use("/api/incomes", incomes);
 app.use("/api/spendings", spendings);
 app.use("/api/creditcards", creditcards);
+app.use("/api/goals", goals);
 app.use("/api/dashboard", dashboard);
 
 app.listen(port, () => console.log(`Server is running on port: ${port}`));
