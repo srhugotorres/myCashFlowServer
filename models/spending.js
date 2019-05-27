@@ -7,12 +7,6 @@ const SpendingSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "users"
   },
-  previewSpending: {
-    type: Schema.Types.ObjectId,
-    ref: "spending",
-    required: false,
-    default: null
-  },
   spending: {
     type: String,
     required: true

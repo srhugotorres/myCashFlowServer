@@ -11,6 +11,29 @@ const validateSpendingInput = require("../../validation/spending");
 const Spending = require("../../models/Spending");
 // Load User profile
 const User = require("../../models/User");
+//
+function toDateObject(date) {
+    'use strict';
+    return new Date(
+        date.year,
+        date.month - 1,
+        date.day
+    );
+}
+function toSimpleObject(myDate) {
+    'use strict';
+    return{
+        day:  myDate.getDate(),
+        month: myDate.getMonth() + 1,
+        year:  myDate.getFullYear()
+    }
+}
+function addMonth(date, months) {
+    let myDate = toSimpleObject(date);
+    myDate.month = myDate.month + months;
+    return  toDateObject(myDate)
+}
+//
 
 // @route   GET api/spendings/test
 // @desc    Tests spendings route
@@ -81,32 +104,29 @@ router.post(
         // Adicionar
         // Salvar
         let spendingID;
+        let countDate = 1;
         new Spending(spendingFields).save(
           function(err,mySpending){
             spendingID = mySpending.id
             Spending.findById(spendingID).then(
               spending => {
                 // Verifica se o gasto é recorrente
-                if (spending.previewSpending === null && spending.totalBills > 1){
-                  for(let i = spending.currentBill + 1 ; i <= spending.totalBills; i++){ 
-                    let currentSpending = {}
+                if (spending.totalBills > 1){
+                  for(let i = spending.currentBill + 1 ; i <= spending.totalBills; i++){
+                    console.log("Contando.... : " + countDate);
+                    let currentSpending = {};
                     currentSpending.user = spending.user;
-                    // Armazena id do mês anterior. requer correção.
-                    currentSpending.previewSpending = spendingID;
                     currentSpending.spending = spending.spending;
                     currentSpending.currentBill = i;
                     currentSpending.totalBills = spending.totalBills;
                     currentSpending.category = spending.category;
                     // Necessário realizar correção na data para que vá incrementando o mês
-                    currentSpending.paymentDate =  spending.paymentDate;
+                    currentSpending.paymentDate =  addMonth(spending.paymentDate,countDate);
                     currentSpending.payment = spending.payment;
                     currentSpending.value = spending.value;
                     // adiciona a despesa recorrente com mês seguinte.
-                    new Spending(currentSpending).save(
-                      function(err,mySpending){
-                        spendingID = mySpending.id
-                      }
-                    )
+                    new Spending(currentSpending).save();
+                    countDate++;
                   }
                 }
               }
