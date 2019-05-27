@@ -45,8 +45,8 @@ router.get(
     let months = [];
 
     Promise.all([
-      Spending.find({ user: req.user.id }).sort("paymentDate"),
-      Income.find({ user: req.user.id }).sort("date")
+      Spending.find({ user: req.user.id }),
+      Income.find({ user: req.user.id })
     ])
       .then(([spendings, incomes]) => {
         const spendingMonths = spendings.map(spending => {
@@ -61,8 +61,6 @@ router.get(
 
         months.sort(compareNumbers);
 
-        months = months.map(month => monthNames[month]);
-
         // Spendings
         let dateValue = spendings.map(spending => ({
           ...spending,
@@ -72,7 +70,7 @@ router.get(
 
         let mapDayToMonth = dateValue.map(x => ({
           ...x,
-          date: monthNames[x.date.getMonth()]
+          date: x.date.getMonth()
         }));
 
         let spendingSumPerMonth = mapDayToMonth.reduce((acc, cur) => {
@@ -95,7 +93,7 @@ router.get(
 
         let incomeMapDayToMonth = incomeDateValue.map(x => ({
           ...x,
-          date: monthNames[x.date.getMonth()]
+          date: x.date.getMonth()
         }));
 
         let incomeSumPerMonth = incomeMapDayToMonth.reduce((acc, cur) => {
